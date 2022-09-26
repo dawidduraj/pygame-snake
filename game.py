@@ -14,7 +14,7 @@ grid = math.floor(SIZE/SCALE)
 
 # Snake Class
 class Snake:
-    def __init__(self, x=0, y=0, xspeed=1, yspeed=0):
+    def __init__(self, x=0, y=0, xspeed=0, yspeed=1):
         self.x = x
         self.y = y
         self.xspeed = xspeed
@@ -23,6 +23,16 @@ class Snake:
     def update(self):
         self.x += self.xspeed * SCALE
         self.y += self.yspeed * SCALE
+
+        if self.x < 0:
+            self.x = SIZE - SCALE
+        if self.x > SIZE:
+            self.x = 0
+        
+        if self.y < 0:
+            self.y = SIZE - SCALE
+        if self.y > SIZE:
+            self.y = 0
     
     def draw(self):
         pygame.draw.rect(window, COLORS["SNAKE"], [self.x,self.y, SCALE,SCALE])

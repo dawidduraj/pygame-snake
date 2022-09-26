@@ -26,12 +26,12 @@ class Snake:
 
         if self.x < 0:
             self.x = SIZE - SCALE
-        if self.x > SIZE:
+        if self.x >= SIZE:
             self.x = 0
         
         if self.y < 0:
             self.y = SIZE - SCALE
-        if self.y > SIZE:
+        if self.y >= SIZE:
             self.y = 0
     
     def draw(self):
@@ -52,6 +52,19 @@ while True:
             # Quit game when window is closed
             pygame.quit()
             quit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                snake.xspeed = -1
+                snake.yspeed = 0
+            if event.key == pygame.K_RIGHT:
+                snake.xspeed = 1
+                snake.yspeed = 0
+            if event.key == pygame.K_UP:
+                snake.xspeed = 0
+                snake.yspeed = -1
+            if event.key == pygame.K_DOWN:
+                snake.xspeed = 0
+                snake.yspeed = 1
     snake.update()
     snake.draw()
     pygame.display.update()

@@ -2,6 +2,7 @@ import pygame
 
 # Variables/Constants
 SIZE = 500
+FPS = 10
 COLORS = {
     "BACKGROUND" : (25,1,33),
     "SNAKE" : (70,4,121),
@@ -9,8 +10,18 @@ COLORS = {
 }
 
 
-# setup
+# Setup
 pygame.init()
 window = pygame.display.set_mode((SIZE,SIZE))
 clock = pygame.time.Clock()
 pygame.display.set_caption("Snake 🐍")
+
+
+# Game Loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            # Quit game when window is closed
+            pygame.quit()
+            quit()
+    clock.tick(FPS)

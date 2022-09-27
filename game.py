@@ -47,6 +47,11 @@ class Food:
 
     def draw(self):
         pygame.draw.rect(window, COLORS["FOOD"], [self.x,self.y, SCALE,SCALE])
+    
+    def eat(self,snake):
+        if self.x == snake.x and self.y == snake.y:
+            self.x = random.randrange(0,tiles) * SCALE
+            self.y = random.randrange(0,tiles) * SCALE
 # Setup
 pygame.init()
 window = pygame.display.set_mode((SIZE,SIZE))
@@ -88,6 +93,7 @@ while True:
     drawGrid()
     food.draw()
     snake.update()
+    food.eat(snake)
     snake.draw()
     pygame.display.update()
     window.fill(COLORS["BACKGROUND"])

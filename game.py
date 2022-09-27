@@ -1,5 +1,4 @@
 import pygame
-import math
 import random
 
 # Variables/Constants
@@ -9,11 +8,12 @@ FPS = 10
 COLORS = {
     "BACKGROUND" : (25,1,33),
     "SNAKE" : (70,4,121),
-    "FOOD" : (140,45,143),
+    "FOOD" : (179, 18, 45),
     "GRID": (16, 22, 63)
 }
 tiles = round(SIZE/SCALE)
 print(tiles)
+
 # Snake Class
 class Snake:
     def __init__(self, x=0, y=0, xspeed=0, yspeed=1):
@@ -39,6 +39,15 @@ class Snake:
     def draw(self):
         pygame.draw.rect(window, COLORS["SNAKE"], [self.x,self.y, SCALE,SCALE])
 
+# Food Class
+class Food:
+
+    def __init__(self,x=0,y=0):
+        self.x = x
+        self.y = y
+
+    def draw(self):
+        pygame.draw.rect(window, COLORS["FOOD"], [self.x,self.y, SCALE,SCALE])
 # Setup
 pygame.init()
 window = pygame.display.set_mode((SIZE,SIZE))
@@ -47,7 +56,10 @@ clock = pygame.time.Clock()
 pygame.display.set_caption("Snake 🐍")
 
 # Place Snake on a random tile
-snake = Snake(random.randint(0,tiles) * SCALE, random.randint(0,tiles) * SCALE,0,0)
+snake = Snake(random.randrange(0,tiles) * SCALE, random.randrange(0,tiles) * SCALE,0,0)
+
+# Place Food on a random tile, TODO: Check if the tile is free
+food = Food(random.randrange(0,tiles) * SCALE, random.randrange(0,tiles) * SCALE)
 
 def drawGrid():
     for x in range(0,SIZE,SCALE):
@@ -75,6 +87,7 @@ while True:
                 snake.xspeed = 0
                 snake.yspeed = 1
     drawGrid()
+    food.draw()
     snake.update()
     snake.draw()
     pygame.display.update()

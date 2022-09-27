@@ -8,9 +8,9 @@ FPS = 10
 COLORS = {
     "BACKGROUND" : (25,1,33),
     "SNAKE" : (70,4,121),
-    "FOOD" : (140,45,143)
+    "FOOD" : (140,45,143),
+    "GRID": (16, 22, 63)
 }
-grid = math.floor(SIZE/SCALE)
 
 # Snake Class
 class Snake:
@@ -43,8 +43,15 @@ window = pygame.display.set_mode((SIZE,SIZE))
 window.fill(COLORS["BACKGROUND"])
 clock = pygame.time.Clock()
 pygame.display.set_caption("Snake 🐍")
-snake = Snake()
 
+# Get middle of the Screen, Subtract half a snake length from it, place snake in that position
+snake = Snake(round(SIZE/SCALE) / 2 * SCALE - SCALE /2,round(SIZE/SCALE) / 2 * SCALE - SCALE /2,0,0)
+
+def drawGrid():
+    for x in range(0,SIZE,SCALE):
+        for y in range(0,SIZE,SCALE):
+            rect = pygame.Rect(x, y, SCALE, SCALE)
+            pygame.draw.rect(window, COLORS["GRID"], rect, 1)
 # Game Loop
 while True:
     for event in pygame.event.get():
@@ -65,6 +72,7 @@ while True:
             if event.key == pygame.K_DOWN:
                 snake.xspeed = 0
                 snake.yspeed = 1
+    drawGrid()
     snake.update()
     snake.draw()
     pygame.display.update()

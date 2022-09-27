@@ -1,10 +1,11 @@
+from os import TMP_MAX
 import pygame
 import random
 
 # Variables/Constants
 SIZE = 400
 SCALE = 20
-FPS = 10
+FPS = 20
 COLORS = {
     "BACKGROUND" : (25,1,33),
     "SNAKE" : (70,4,121),
@@ -16,27 +17,40 @@ tiles = round(SIZE/SCALE)
 # Snake Class
 class Snake:
     def __init__(self, x=0, y=0, xspeed=0, yspeed=1):
-        self.x = x
-        self.y = y
         self.xspeed = xspeed
         self.yspeed = yspeed
+
+        # for easier position updating we seperate the snakes body and head
+        self.head = [x,y]
+        self.body = []
     
     def update(self):
-        self.x += self.xspeed * SCALE
-        self.y += self.yspeed * SCALE
+        if len(self.body) > 0:
+            for i in range(len(self.body) - 1):
+                # set piece position to position of the piece before it
+                self.body[i][0] = self.body[i+1][0]
+                self.body[i][1] = self.body[i+1][1]
 
-        if self.x < 0:
-            self.x = SIZE - SCALE
-        if self.x >= SIZE:
-            self.x = 0
+            # set first piece position to head position
+            self.body[len(self.body) - 1][0] = self.head[0]
+            self.body[len(self.body) - 1][1] = self.head[1]
         
-        if self.y < 0:
-            self.y = SIZE - SCALE
-        if self.y >= SIZE:
-            self.y = 0
+        self.head[0] += self.xspeed * SCALE
+        self.head[1] += self.yspeed * SCALE
+        if self.head[0] < 0:
+            self.head[0] = SIZE - SCALE
+        if self.head[0] >= SIZE:
+            self.head[0] = 0
+        
+        if self.head[1] < 0:
+            self.head[1] = SIZE - SCALE
+        if self.head[1] >= SIZE:
+            self.head[1] = 0
     
     def draw(self):
-        pygame.draw.rect(window, COLORS["SNAKE"], [self.x,self.y, SCALE,SCALE])
+        pygame.draw.rect(window, COLORS["SNAKE"], [self.head[0],self.head[1], SCALE,SCALE])
+        for part in self.body:
+            pygame.draw.rect(window, COLORS["SNAKE"], [part[0],part[1], SCALE,SCALE])
 
 # Food Class
 class Food:
@@ -49,9 +63,11 @@ class Food:
         pygame.draw.rect(window, COLORS["FOOD"], [self.x,self.y, SCALE,SCALE])
     
     def eat(self,snake):
-        if self.x == snake.x and self.y == snake.y:
+        if self.x == snake.head[0] and self.y == snake.head[1]:
+            snake.body.insert(0,[self.x,self.y])
             self.x = random.randrange(0,tiles) * SCALE
             self.y = random.randrange(0,tiles) * SCALE
+
 # Setup
 pygame.init()
 window = pygame.display.set_mode((SIZE,SIZE))
@@ -92,8 +108,8 @@ while True:
                 snake.yspeed = 1
     drawGrid()
     food.draw()
-    snake.update()
     food.eat(snake)
+    snake.update()
     snake.draw()
     pygame.display.update()
     window.fill(COLORS["BACKGROUND"])

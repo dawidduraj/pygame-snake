@@ -1,8 +1,9 @@
 import pygame
 import math
+import random
 
 # Variables/Constants
-SIZE = 500
+SIZE = 400
 SCALE = 20
 FPS = 10
 COLORS = {
@@ -11,7 +12,8 @@ COLORS = {
     "FOOD" : (140,45,143),
     "GRID": (16, 22, 63)
 }
-
+tiles = round(SIZE/SCALE)
+print(tiles)
 # Snake Class
 class Snake:
     def __init__(self, x=0, y=0, xspeed=0, yspeed=1):
@@ -44,8 +46,8 @@ window.fill(COLORS["BACKGROUND"])
 clock = pygame.time.Clock()
 pygame.display.set_caption("Snake 🐍")
 
-# Get middle of the Screen, Subtract half a snake length from it, place snake in that position
-snake = Snake(round(SIZE/SCALE) / 2 * SCALE - SCALE /2,round(SIZE/SCALE) / 2 * SCALE - SCALE /2,0,0)
+# Place Snake on a random tile
+snake = Snake(random.randint(0,tiles) * SCALE, random.randint(0,tiles) * SCALE,0,0)
 
 def drawGrid():
     for x in range(0,SIZE,SCALE):

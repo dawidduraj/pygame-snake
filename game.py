@@ -12,7 +12,6 @@ COLORS = {
     "GRID": (16, 22, 63)
 }
 tiles = round(SIZE/SCALE)
-print(tiles)
 
 # Snake Class
 class Snake:
